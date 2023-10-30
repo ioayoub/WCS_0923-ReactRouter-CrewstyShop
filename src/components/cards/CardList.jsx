@@ -33,12 +33,14 @@ function CardList() {
 
   return (
     <>
-      <select name="filters" onChange={handleFiltersChange}>
-        <option value="All">All</option>
-        <option value="Mode">Mode</option>
-        <option value="Maison">Maison</option>
-        <option value="Électronique">Électronique</option>
-      </select>
+      <div className="flex flex-row justify-center my-6">
+        <select name="selectFilter" onChange={handleFiltersChange}>
+          <option value="All">All</option>
+          <option value="Mode">Mode</option>
+          <option value="Maison">Maison</option>
+          <option value="Électronique">Électronique</option>
+        </select>
+      </div>
 
       <div className="flex flex-row flex-wrap justify-center gap-4">
         {filteredProducts &&

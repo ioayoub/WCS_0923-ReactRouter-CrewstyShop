@@ -1,24 +1,7 @@
-import { useState } from "react";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { NavLink, useLoaderData } from "react-router-dom";
 
 function SingleProduct() {
-  const { id } = useParams();
-
-  const navigate = useNavigate();
-
-  const [product, setProduct] = useState(null);
-
-  useEffect(() => {
-    fetch("https://ioayoub.fr/api/eshop")
-      .then((res) => res.json())
-      .then((data) => setProduct(data.find((d) => d.id === parseInt(id, 10))))
-      .catch((err) => console.error(err));
-  }, [id]);
-
-  if (isNaN(parseInt(id, 10))) return navigate("/toto");
+  const product = useLoaderData();
 
   return (
     <>
@@ -62,12 +45,12 @@ function SingleProduct() {
             Tous nos produits sont disponible à la livraison ou au retrait en
             boutique.
           </p>
-          <Link
+          <NavLink
             to="/products"
             className="block mx-auto p-4 text-white bg-neutral-800 rounded-full w-fit my-8"
           >
             Retour aux produits
-          </Link>
+          </NavLink>
         </>
       )}
     </>

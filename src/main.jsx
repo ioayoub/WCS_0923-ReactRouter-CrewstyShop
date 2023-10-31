@@ -8,6 +8,7 @@ import Products from "./pages/Products.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import SingleProduct from "./pages/SingleProduct.jsx";
 import Homepage from "./pages/Homepage.jsx";
+import { defer } from "react-router-dom";
 
 const router = createBrowserRouter([
   {
@@ -20,10 +21,21 @@ const router = createBrowserRouter([
       {
         path: "products",
         element: <Products />,
+        loader: () => {
+          const products = fetch("https://ioayoub.fr/api/eshop").then((res) =>
+            res.json()
+          );
+
+          return defer({
+            products,
+          });
+        },
       },
       {
         path: "products/:id",
         element: <SingleProduct />,
+        loader: ({ params }) =>
+          fetch(`https://ioayoub.fr/api/eshop/${params.id}`),
       },
       {
         path: "*",

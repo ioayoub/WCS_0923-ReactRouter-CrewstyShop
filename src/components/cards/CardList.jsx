@@ -1,21 +1,11 @@
 import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import Card from "./Card";
 
-function CardList() {
-  const [products, setProducts] = useState(null);
-  const [filteredProducts, setFilteredProducts] = useState(null);
+function CardList({ apiProducts }) {
+  const products = apiProducts;
+  const [filteredProducts, setFilteredProducts] = useState(apiProducts);
   const [currentFilter, setCurrentFilter] = useState(null);
-
-  useEffect(() => {
-    fetch("https://ioayoub.fr/api/eshop")
-      .then((res) => res.json())
-      .then((data) => setProducts(data))
-      .catch((err) => console.error(err));
-  }, []);
-
-  useEffect(() => {
-    products && setFilteredProducts(products);
-  }, [products]);
 
   useEffect(() => {
     if (!currentFilter) return;
@@ -43,21 +33,34 @@ function CardList() {
       </div>
 
       <div className="flex flex-row flex-wrap justify-center gap-4">
-        {filteredProducts &&
-          filteredProducts.map((p) => (
-            <Card
-              image={p.picture_resized}
-              description={p.description}
-              name={p.name}
-              category={p.category}
-              id={p.id}
-              price={`${p.price}  €`}
-              key={p.id}
-            />
-          ))}
+        {filteredProducts.map((p) => (
+          <Card
+            image={p.picture_resized}
+            description={p.description}
+            name={p.name}
+            category={p.category}
+            id={p.id}
+            price={`${p.price}  €`}
+            key={p.id}
+          />
+        ))}
       </div>
     </>
   );
 }
+
+CardList.propTypes = {
+  apiProducts: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      description: PropTypes.string.isRequired,
+
+      category: PropTypes.string.isRequired,
+      picture_resized: PropTypes.string.isRequired,
+      price: PropTypes.number.isRequired,
+    })
+  ).isRequired,
+};
 
 export default CardList;
